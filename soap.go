@@ -5,7 +5,7 @@ import (
 	"context"
 	"crypto/tls"
 	"encoding/xml"
-	"io/ioutil"
+	"io"
 	"log"
 	"math/rand"
 	"net"
@@ -13,19 +13,17 @@ import (
 	"time"
 )
 
-var timeout = time.Duration(30 * time.Second)
-
 func dialTimeout(t time.Duration) func(ctx context.Context, network, addr string) (net.Conn, error) {
 	var f = func(ctx context.Context, network, addr string) (net.Conn, error) {
-		return net.DialTimeout(network, addr, timeout)
+		return net.DialTimeout(network, addr, t)
 	}
 	return f
 }
 
-type SOAPEnvelope struct {
-	XMLName xml.Name `xml:"http://schemas.xmlsoap.org/soap/envelope/ Envelope"`
+type SOAPEnvelope[T any] struct {
+	XMLName xml.Name `xml:"http://schemas.xmlsoap.org/soap/envelope/ soapenv:Envelope"`
 	Header  *SOAPHeader
-	Body    SOAPBody
+	Body    SOAPBody[T]
 }
 
 type SOAPHeader struct {
@@ -34,11 +32,11 @@ type SOAPHeader struct {
 	Items []interface{} `xml:",omitempty"`
 }
 
-type SOAPBody struct {
-	XMLName xml.Name `xml:"http://schemas.xmlsoap.org/soap/envelope/ Body"`
+type SOAPBody[T any] struct {
+	XMLName xml.Name `xml:"http://schemas.xmlsoap.org/soap/envelope/ soapenv:Body"`
 
-	Fault   *SOAPFault  `xml:",omitempty"`
-	Content interface{} `xml:",omitempty"`
+	Fault   *SOAPFault `xml:",omitempty"`
+	Content T          `xml:",omitempty"`
 }
 
 type SOAPFault struct {
@@ -102,6 +100,7 @@ type SOAPClient struct {
 	tlsCfg  *tls.Config
 	auth    *BasicAuth
 	headers []interface{}
+	timeout time.Duration
 }
 
 // **********
@@ -143,10 +142,10 @@ func NewWSSSecurityHeader(user, pass, mustUnderstand string) *WSSSecurityHeader 
 	return hdr
 }
 
-func (b *SOAPBody) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
-	if b.Content == nil {
-		return xml.UnmarshalError("Content must be a pointer to a struct")
-	}
+func (b *SOAPBody[T]) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
+	//if b.Content == nil {
+	//	return xml.UnmarshalError("Content must be a pointer to a struct")
+	//}
 
 	var (
 		token    xml.Token
@@ -170,7 +169,7 @@ Loop:
 				return xml.UnmarshalError("Found multiple elements inside SOAP body; not wrapped-document/literal WS-I compliant")
 			} else if se.Name.Space == "http://schemas.xmlsoap.org/soap/envelope/" && se.Name.Local == "Fault" {
 				b.Fault = &SOAPFault{}
-				b.Content = nil
+				//b.Content = nil
 
 				err = d.DecodeElement(b.Fault, &se)
 				if err != nil {
@@ -206,18 +205,29 @@ func NewSOAPClient(url string, insecureSkipVerify bool, auth *BasicAuth) *SOAPCl
 
 func NewSOAPClientWithTLSConfig(url string, tlsCfg *tls.Config, auth *BasicAuth) *SOAPClient {
 	return &SOAPClient{
-		url:    url,
-		tlsCfg: tlsCfg,
-		auth:   auth,
+		url:     url,
+		tlsCfg:  tlsCfg,
+		auth:    auth,
+		timeout: 30 * time.Second,
 	}
+}
+
+func (s *SOAPClient) SetTimeout(t time.Duration) {
+	s.timeout = t
 }
 
 func (s *SOAPClient) AddHeader(header interface{}) {
 	s.headers = append(s.headers, header)
 }
 
+func NewEnvelope[T any](t T) SOAPEnvelope[T] {
+	var e SOAPEnvelope[T]
+	e.Body = SOAPBody[T]{Content: t}
+	return e
+}
+
 func (s *SOAPClient) Call(soapAction string, request, response interface{}) error {
-	envelope := SOAPEnvelope{}
+	envelope := NewEnvelope(request)
 
 	if s.headers != nil && len(s.headers) > 0 {
 		soapHeader := &SOAPHeader{Items: make([]interface{}, len(s.headers))}
@@ -229,7 +239,7 @@ func (s *SOAPClient) Call(soapAction string, request, response interface{}) erro
 	buffer := new(bytes.Buffer)
 
 	encoder := xml.NewEncoder(buffer)
-	//encoder.Indent("  ", "    ")
+	encoder.Indent("", "  ")
 
 	if err := encoder.Encode(envelope); err != nil {
 		return err
@@ -256,7 +266,7 @@ func (s *SOAPClient) Call(soapAction string, request, response interface{}) erro
 	req.Close = true
 	tr := &http.Transport{
 		TLSClientConfig: s.tlsCfg,
-		DialContext:     dialTimeout(timeout),
+		DialContext:     dialTimeout(s.timeout),
 	}
 
 	client := &http.Client{Transport: tr}
@@ -266,7 +276,7 @@ func (s *SOAPClient) Call(soapAction string, request, response interface{}) erro
 	}
 	defer res.Body.Close()
 
-	rawbody, err := ioutil.ReadAll(res.Body)
+	rawbody, err := io.ReadAll(res.Body)
 	if err != nil {
 		return err
 	}
@@ -276,8 +286,8 @@ func (s *SOAPClient) Call(soapAction string, request, response interface{}) erro
 	}
 
 	log.Println(string(rawbody))
-	respEnvelope := new(SOAPEnvelope)
-	respEnvelope.Body = SOAPBody{Content: response}
+	respEnvelope := NewEnvelope(response)
+	//respEnvelope.Body = SOAPBody{Content: response}
 	err = xml.Unmarshal(rawbody, respEnvelope)
 	if err != nil {
 		return err
