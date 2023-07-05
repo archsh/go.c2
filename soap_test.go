@@ -24,7 +24,7 @@ func TestSOAPClient_Test(t *testing.T) {
 		CorrelateID: "3",
 		CmdFileURL:  "http://12314.12414.12412.4/aaa",
 	}
-	var ret = ExecCmdRes{}
+	var ret = ExecCmdResponse{}
 	if e := client.Call("ExecCmdReq", req, &ret); nil != e {
 		fmt.Println("Failed:>", e)
 	}

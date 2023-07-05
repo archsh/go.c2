@@ -2,6 +2,8 @@ package c2
 
 import "encoding/xml"
 
+// the c2 command definitions
+
 /*
 <soapenv:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:iptv="iptv">
 
@@ -40,7 +42,7 @@ type ExecCmdReq struct {
 
 </soapenv:Envelope>
 */
-type ExecCmdRes struct {
+type ExecCmdResponse struct {
 	XMLName          xml.Name `xml:"http://schemas.xmlsoap.org/soap/envelope/ iptv:ExecCmdResponse"`
 	Result           int
 	ErrorDescription string
@@ -86,7 +88,7 @@ type ResultNotifyReq struct {
 
 </soapenv:Envelope>
 */
-type ResultNotifyRes struct {
+type ResultNotifyResponse struct {
 	XMLName          xml.Name `xml:"http://schemas.xmlsoap.org/soap/envelope/ iptv:ResultNotifyResponse"`
 	Result           int
 	ErrorDescription string
