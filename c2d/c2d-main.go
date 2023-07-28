@@ -46,6 +46,7 @@ func init() {
 
 func init() {
 	rootCmd.AddCommand(serveCmd)
+	rootCmd.AddCommand(testCmd)
 }
 
 // initConfig reads in config file and ENV variables if set.
