@@ -4,6 +4,14 @@ package c2
 type HTTPClient struct {
 }
 
+func (c HTTPClient) Get(filename string, output string) error {
+	return nil
+}
+
+func HttpGet(filename string, output string) error {
+	return defaultHTTPClient.Get(filename, output)
+}
+
 var defaultHTTPClient *HTTPClient
 
 func init() {
