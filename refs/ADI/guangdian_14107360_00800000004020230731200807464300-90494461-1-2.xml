@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<ADI BizDomain="2" CheckFlag="0" StaffID="999999998" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+  <Objects>
+    <Object Action="REGIST" Code="programd6e32023073116000051" ElementType="Program" ID="programd6e32023073116000051">
+      <Property Name="CPID">腾讯视频</Property>
+      <Property Name="ContentProvider">腾讯视频</Property>
+      <Property Name="CopyRight">腾讯视频</Property>
+      <Property Name="Director">;</Property>
+      <Property Name="Duration">7</Property>
+      <Property Name="Duration1">10500</Property>
+      <Property Name="Framerate">25</Property>
+      <Property Name="Genre">动漫</Property>
+      <Property Name="Language">无</Property>
+      <Property Name="LicensingWindowEnd">21200101010000</Property>
+      <Property Name="LicensingWindowStart">20200101010000</Property>
+      <Property Name="Name">闹够了吗？敢对何家动手？_88</Property>
+      <Property Name="OriginalCountry">内地</Property>
+      <Property Name="PriceTaxIn">0.00</Property>
+      <Property Name="ReleaseYear">2021</Property>
+      <Property Name="SPCode">HWTX</Property>
+      <Property Name="SeriesFlag">1</Property>
+      <Property Name="SourceType">1</Property>
+      <Property Name="Status">1</Property>
+      <Property Name="Type">动漫</Property>
+      <Property Name="VSPCode">HWTX</Property>
+      <Property Name="WriterDisplay">;</Property>
+    </Object>
+    <Object Action="REGIST" Code="moviefe7d2023073116000051" ElementType="Movie" ID="moviefe7d2023073116000051">
+      <Property Name="BizDomain">2</Property>
+      <Property Name="FileURL">ftp://iptv:iptv123@172.18.11.10:21//vod/dell-vod3/2023/07/31/4901806/4901806.m3u8</Property>
+      <Property Name="MediaSpec">TS-VBR-H.264-20000-720P-25-MP2-32</Property>
+      <Property Name="MovieHeadDuration">0</Property>
+      <Property Name="MovieTailDuration">0</Property>
+      <Property Name="Name">闹够了吗？敢对何家动手？_88</Property>
+      <Property Name="ScreenFormat">0</Property>
+      <Property Name="Type">1</Property>
+    </Object>
+  </Objects>
+
+  <Mappings>
+    <Mapping Action="REGIST" ElementCode="moviefe7d2023073116000051" ElementID="moviefe7d2023073116000051" ElementType="Movie" ParentCode="programd6e32023073116000051" ParentID="programd6e32023073116000051" ParentType="Program"/>
+    <Mapping Action="REGIST" ElementCode="programd6e32023073116000051" ElementID="programd6e32023073116000051" ElementType="Program" ParentCode="seriesc09d2023011715030012" ParentID="seriesc09d2023011715030012" ParentType="Series">
+      <Property Name="Sequence">88</Property>
+    </Mapping>
+  </Mappings>
+
+</ADI>

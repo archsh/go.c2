@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<ADI CheckFlag="0" StaffID="999999998" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+  <Objects>
+    <Object Action="REGIST" Code="Umai:PROG/7623658@BESTV.SMG.SMG" ElementType="Program" ID="Umai:PROG/7623658@BESTV.SMG.SMG">
+      <Property Name="CPID">百视通</Property>
+      <Property Name="ContentProvider">百视通</Property>
+      <Property Name="CopyRight">百视通</Property>
+      <Property Name="Description">（来源百视通）美前司法部长等反对特朗普参选</Property>
+      <Property Name="Duration">2</Property>
+      <Property Name="Duration1">3000</Property>
+      <Property Name="Framerate">25</Property>
+      <Property Name="Genre">新闻</Property>
+      <Property Name="Language">普通话</Property>
+      <Property Name="LicensingWindowEnd">29990101000000</Property>
+      <Property Name="LicensingWindowStart">20230801092854</Property>
+      <Property Name="Macrovision">0</Property>
+      <Property Name="Name">C新闻230801美前司法部长等反对特朗普参选</Property>
+      <Property Name="OriginalCountry">中国</Property>
+      <Property Name="OriginalName">美前司法部长等反对特朗普参选</Property>
+      <Property Name="PriceTaxIn">0.00</Property>
+      <Property Name="ReleaseYear">2023</Property>
+      <Property Name="SPCode">BST</Property>
+      <Property Name="SearchName">Cxw230801mqsfbzdfdtlpcx</Property>
+      <Property Name="SeriesFlag">0</Property>
+      <Property Name="SortName">Cxw230801mqsfbzdfdtlpcx</Property>
+      <Property Name="SourceType">1</Property>
+      <Property Name="Status">1</Property>
+      <Property Name="Type">新闻</Property>
+      <Property Name="VSPCode">BST</Property>
+    </Object>
+  </Objects>
+
+</ADI>

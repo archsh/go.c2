@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<ADI CheckFlag="0" StaffID="999999998" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+  <Objects>
+    <Object Action="REGIST" Code="00000001000000010000000213966304" ElementType="Program" ID="00000001000000010000000213966304">
+      <Property Name="CPID">CCTV</Property>
+      <Property Name="ContentProvider">CCTV</Property>
+      <Property Name="CopyRight">CCTV</Property>
+      <Property Name="Description">纵观战争史，各种发明的问世，改变了作战方式。有一种武器，不仅改变了战场，也改变了战争本身，这种武器就是轰炸机。轰炸机和空袭，开始被各国重视。残忍无情的空中轰炸，在世界刮起了前所未见的恐怖风暴。</Property>
+      <Property Name="Duration">22</Property>
+      <Property Name="Duration1">33000</Property>
+      <Property Name="Framerate">25</Property>
+      <Property Name="Genre">VOD</Property>
+      <Property Name="Language">中文</Property>
+      <Property Name="LicensingWindowEnd">29991231000000</Property>
+      <Property Name="LicensingWindowStart">20230731000000</Property>
+      <Property Name="Name">二战大轰炸·恐怖的轰炸（上）HD</Property>
+      <Property Name="OriginalCountry">中国</Property>
+      <Property Name="OriginalName">世界战史</Property>
+      <Property Name="PgmCategory">军事</Property>
+      <Property Name="PgmSndClass">历史</Property>
+      <Property Name="PriceTaxIn">0.00</Property>
+      <Property Name="ReleaseYear">2023</Property>
+      <Property Name="SPCode">DXCS</Property>
+      <Property Name="SearchName">sjzs</Property>
+      <Property Name="SeriesFlag">0</Property>
+      <Property Name="SortName">20230731180000</Property>
+      <Property Name="SourceType">1</Property>
+      <Property Name="Status">1</Property>
+      <Property Name="Tags">世界战史</Property>
+      <Property Name="Type">VOD</Property>
+      <Property Name="VSPCode">DXCS</Property>
+    </Object>
+    <Object Action="REGIST" Code="00000001000000080000000001239122" ElementType="Picture" ID="00000001000000080000000001239122">
+      <Property Name="FileURL">ftp://wacos:wacos@172.18.21.20//opt/wacos/CTMSData/picture/2023/08/01/20230801150459_5383507.jpg</Property>
+    </Object>
+    <Object Action="REGIST" Code="00000001000000020000000008876512" ElementType="Movie" ID="00000001000000020000000008876512">
+      <Property Name="FileURL">ftp://iptv:iptv123@172.18.11.10:21//vod/dell-vod1/2023/08/1/4903733.ts</Property>
+      <Property Name="MediaSpec">TS-CBR-H.264-8000-1080i-25-MP2-128</Property>
+      <Property Name="MovieHeadDuration">0</Property>
+      <Property Name="MovieTailDuration">0</Property>
+      <Property Name="Name">《世界战史》 20230731 二战大轰炸·恐怖的轰炸（上）</Property>
+      <Property Name="Type">1</Property>
+    </Object>
+  </Objects>
+
+  <Mappings>
+    <Mapping Action="REGIST" ElementCode="00000001000000020000000008876512" ElementID="00000001000000020000000008876512" ElementType="Movie" ParentCode="00000001000000010000000213966304" ParentID="00000001000000010000000213966304" ParentType="Program"/>
+    <Mapping Action="REGIST" ElementCode="00000001000000010000000213966304" ElementID="00000001000000010000000213966304" ElementType="Program" ParentCode="00000001000000080000000001239122" ParentID="00000001000000080000000001239122" ParentType="Picture">
+      <Property Name="Sequence">99</Property>
+      <Property Name="Type">1</Property>
+    </Mapping>
+  </Mappings>
+
+</ADI>

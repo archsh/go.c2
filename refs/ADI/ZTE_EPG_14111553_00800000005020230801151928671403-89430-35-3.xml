@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<ADI CheckFlag="0" StaffID="999999998" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+  <Objects>
+    <Object Action="REGIST" Code="HSWJDXX2308010920008391764" ElementType="Series" ID="HSWJDXX2308010920008391764">
+      <Property Name="ContentProvider">新华视网聚</Property>
+      <Property Name="CopyRight">新华视网聚</Property>
+      <Property Name="Description">（华视网聚）王默和罗丽会发生什么？思思能救回孔雀吗？灵犀阁会做什么？魔术师是什么人？禁忌之地和十法相又是什么人？白光莹会解除心的链接吗？情公主去了哪？金王子还有什么尘封的记忆？敬请期待叶罗丽新篇章，第十季：禁忌之地。</Property>
+      <Property Name="Director">无</Property>
+      <Property Name="Genre">少儿</Property>
+      <Property Name="LicensingWindowEnd">21200101000000</Property>
+      <Property Name="LicensingWindowStart">20230101000000</Property>
+      <Property Name="Macrovision">0</Property>
+      <Property Name="Name">精灵梦叶罗丽第十季</Property>
+      <Property Name="PgmCategory">少儿</Property>
+      <Property Name="PgmSndClass">儿童</Property>
+      <Property Name="Price">0.00</Property>
+      <Property Name="ReleaseYear">2016</Property>
+      <Property Name="SPCode">HSWJDXX</Property>
+      <Property Name="SearchName">jlmyll</Property>
+      <Property Name="SeriesType">0</Property>
+      <Property Name="Status">1</Property>
+      <Property Name="Tags">儿童</Property>
+      <Property Name="Type">少儿</Property>
+      <Property Name="VSPCode">HSWJDXX</Property>
+      <Property Name="VolumnCount">26</Property>
+    </Object>
+  </Objects>
+
+</ADI>
