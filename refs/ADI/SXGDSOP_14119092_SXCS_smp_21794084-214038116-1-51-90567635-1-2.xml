@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<ADI CheckFlag="0" StaffID="999999998" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+  <Objects>
+    <Object Action="REGIST" Code="00000001000000010000000214038116" ElementType="Program" ID="00000001000000010000000214038116">
+      <Property Name="CPID">CCTV</Property>
+      <Property Name="Compere">劳春燕</Property>
+      <Property Name="ContentProvider">CCTV</Property>
+      <Property Name="CopyRight">CCTV</Property>
+      <Property Name="Description">从7月29日开始，京津冀多地三天内连发七次暴雨红色预警，7月31日傍晚，中央气象台又继续发布暴雨红色预警和强对流天气黄色预警。面对极端降雨天气，北方地区全力以赴做好极端降雨应对工作。</Property>
+      <Property Name="Duration">16</Property>
+      <Property Name="Duration1">24000</Property>
+      <Property Name="Framerate">25</Property>
+      <Property Name="Genre">VOD</Property>
+      <Property Name="Guest">万群志,王章立</Property>
+      <Property Name="Language">中文</Property>
+      <Property Name="LicensingWindowEnd">29991231000000</Property>
+      <Property Name="LicensingWindowStart">20230801000000</Property>
+      <Property Name="Name">全力以赴 应对极端降雨HD</Property>
+      <Property Name="OriginalCountry">中国</Property>
+      <Property Name="OriginalName">焦点访谈</Property>
+      <Property Name="PgmCategory">新闻</Property>
+      <Property Name="PgmSndClass">国内,综合,社会</Property>
+      <Property Name="PriceTaxIn">0.00</Property>
+      <Property Name="ReleaseYear">2023</Property>
+      <Property Name="Reporter">王丰</Property>
+      <Property Name="SPCode">DXCS</Property>
+      <Property Name="SearchName">jdft</Property>
+      <Property Name="SeriesFlag">0</Property>
+      <Property Name="SortName">20230801200540</Property>
+      <Property Name="SourceType">1</Property>
+      <Property Name="Status">1</Property>
+      <Property Name="Tags">焦点访谈</Property>
+      <Property Name="Type">VOD</Property>
+      <Property Name="VSPCode">DXCS</Property>
+    </Object>
+    <Object Action="REGIST" Code="00000001000000080000000001239271" ElementType="Picture" ID="00000001000000080000000001239271">
+      <Property Name="FileURL">ftp://wacos:wacos@172.18.21.20//opt/wacos/CTMSData/picture/2023/08/02/20230802141106_5387563.jpg</Property>
+    </Object>
+    <Object Action="REGIST" Code="00000001000000020000000008877280" ElementType="Movie" ID="00000001000000020000000008877280">
+      <Property Name="BizDomain">0</Property>
+      <Property Name="FileURL">ftp://iptv:iptv123@172.18.11.10:21//vod/dell-vod1/2023/08/2/4908351.ts</Property>
+      <Property Name="MediaSpec">TS-CBR-H.264-8000-1080i-25-MP2-128</Property>
+      <Property Name="MovieHeadDuration">0</Property>
+      <Property Name="MovieTailDuration">0</Property>
+      <Property Name="Name">《焦点访谈》 20230801 全力以赴 应对极端降雨</Property>
+      <Property Name="Type">1</Property>
+    </Object>
+  </Objects>
+
+  <Mappings>
+    <Mapping Action="REGIST" ElementCode="00000001000000020000000008877280" ElementID="00000001000000020000000008877280" ElementType="Movie" ParentCode="00000001000000010000000214038116" ParentID="00000001000000010000000214038116" ParentType="Program"/>
+    <Mapping Action="REGIST" ElementCode="00000001000000010000000214038116" ElementID="00000001000000010000000214038116" ElementType="Program" ParentCode="00000001000000080000000001239271" ParentID="00000001000000080000000001239271" ParentType="Picture">
+      <Property Name="Sequence">99</Property>
+      <Property Name="Type">1</Property>
+    </Mapping>
+  </Mappings>
+
+</ADI>

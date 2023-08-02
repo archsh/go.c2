@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<ADI CheckFlag="0" StaffID="999999998" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+  <Objects>
+    <Object Action="REGIST" Code="59a42b0853bb4e6d94b1a6fd9c25ae3d" ElementType="Program" ID="59a42b0853bb4e6d94b1a6fd9c25ae3d">
+      <Property Name="ActorDisplay">佚名</Property>
+      <Property Name="CPID">卓影电信侧</Property>
+      <Property Name="ContentProvider">卓影电信侧</Property>
+      <Property Name="CopyRight">卓影电信侧</Property>
+      <Property Name="Description">.尊嘟假嘟</Property>
+      <Property Name="Director">佚名</Property>
+      <Property Name="Duration">20</Property>
+      <Property Name="Duration1">30000</Property>
+      <Property Name="Framerate">25</Property>
+      <Property Name="Genre">其他</Property>
+      <Property Name="Kpeople">佚名</Property>
+      <Property Name="LicensingWindowEnd">20251231000000</Property>
+      <Property Name="LicensingWindowStart">20180329000000</Property>
+      <Property Name="Macrovision">0</Property>
+      <Property Name="Name">我的世界不挖矿生存挑战28</Property>
+      <Property Name="OriginalCountry">中国</Property>
+      <Property Name="PgmCategory">其他</Property>
+      <Property Name="PgmSndClass">其他</Property>
+      <Property Name="PriceTaxIn">0.00</Property>
+      <Property Name="ReleaseYear">2023</Property>
+      <Property Name="SPCode">ZYDXC</Property>
+      <Property Name="ScriptWriter">佚名</Property>
+      <Property Name="SearchName">wdsjbwksctz</Property>
+      <Property Name="SeriesFlag">1</Property>
+      <Property Name="SourceType">1</Property>
+      <Property Name="Status">1</Property>
+      <Property Name="Type">其他</Property>
+      <Property Name="VSPCode">ZYDXC</Property>
+      <Property Name="WriterDisplay">佚名</Property>
+    </Object>
+    <Object Action="REGIST" Code="f4d56c05fb284435a34ea32a9f932e55" ElementType="Movie" ID="f4d56c05fb284435a34ea32a9f932e55">
+      <Property Name="BizDomain">0</Property>
+      <Property Name="FileURL">ftp://iptv:iptv123@172.18.11.10:21//vod/dell-vod2/2023/08/2/4908354.ts</Property>
+      <Property Name="MediaSpec">TS-VBR-H.264-20000-720P-25-MP2-32</Property>
+      <Property Name="MovieHeadDuration">0</Property>
+      <Property Name="MovieTailDuration">0</Property>
+      <Property Name="Name">我的世界不挖矿生存挑战28</Property>
+      <Property Name="Type">1</Property>
+    </Object>
+  </Objects>
+
+  <Mappings>
+    <Mapping Action="REGIST" ElementCode="f4d56c05fb284435a34ea32a9f932e55" ElementID="f4d56c05fb284435a34ea32a9f932e55" ElementType="Movie" ParentCode="59a42b0853bb4e6d94b1a6fd9c25ae3d" ParentID="59a42b0853bb4e6d94b1a6fd9c25ae3d" ParentType="Program"/>
+    <Mapping Action="REGIST" ElementCode="59a42b0853bb4e6d94b1a6fd9c25ae3d" ElementID="59a42b0853bb4e6d94b1a6fd9c25ae3d" ElementType="Program" ParentCode="52b089091bf744eb9791219b027ca680" ParentID="52b089091bf744eb9791219b027ca680" ParentType="Series">
+      <Property Name="Sequence">28</Property>
+    </Mapping>
+  </Mappings>
+
+</ADI>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<ADI CheckFlag="0" StaffID="999999998" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+  <Objects>
+    <Object Action="REGIST" Code="52b089091bf744eb9791219b027ca680" ElementType="Series" ID="52b089091bf744eb9791219b027ca680">
+      <Property Name="ActorDisplay">佚名</Property>
+      <Property Name="ContentProvider">卓影电信侧</Property>
+      <Property Name="CopyRight">卓影电信侧</Property>
+      <Property Name="Description">.奇妙世界，等你来挑战！</Property>
+      <Property Name="Director">佚名</Property>
+      <Property Name="Genre">其他</Property>
+      <Property Name="Kpeople">佚名</Property>
+      <Property Name="LicensingWindowEnd">20251231000000</Property>
+      <Property Name="LicensingWindowStart">20180329000000</Property>
+      <Property Name="Macrovision">0</Property>
+      <Property Name="Name">我的世界 不挖矿生存挑战HD</Property>
+      <Property Name="PgmCategory">其他</Property>
+      <Property Name="PgmSndClass">其他</Property>
+      <Property Name="Price">0.00</Property>
+      <Property Name="ReleaseYear">2023</Property>
+      <Property Name="SPCode">ZYDXC</Property>
+      <Property Name="SearchName">wdsjbwksctz</Property>
+      <Property Name="SeriesType">0</Property>
+      <Property Name="Status">1</Property>
+      <Property Name="Type">其他</Property>
+      <Property Name="VSPCode">ZYDXC</Property>
+      <Property Name="VolumnCount">39</Property>
+    </Object>
+  </Objects>
+
+</ADI>

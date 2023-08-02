@@ -31,31 +31,36 @@ type Reply struct {
 }
 
 type Property struct {
-	Name  string `xml:"name,attr"`
+	Name  string `xml:",attr"`
 	Value string `xml:",chardata"`
 }
 
 type Object struct {
 	ID          string     `xml:",attr"`
+	Code        string     `xml:",attr"`
 	ElementType string     `xml:",attr"`
 	Action      string     `xml:",attr"`
 	Properties  []Property `xml:"Property"`
 }
 
 type Mapping struct {
-	ID          string     `xml:",attr"`
 	ParentType  string     `xml:",attr"`
 	ParentID    string     `xml:",attr"`
+	ParentCode  string     `xml:",attr"`
 	ElementType string     `xml:",attr"`
 	ElementID   string     `xml:",attr"`
+	ElementCode string     `xml:",attr"`
 	Action      string     `xml:",attr"`
 	Properties  []Property `xml:"Property"`
 }
 
 type ADI struct {
-	XMLName  xml.Name  `xml:"http://www.w3.org/2001/XMLSchema-instance ADI"`
-	Objects  []Object  `xml:"Objects>Object"`
-	Mappings []Mapping `xml:"Mappings>Mapping"`
+	XMLName   xml.Name  `xml:"ADI"`
+	BizDomain string    `xml:",attr"`
+	CheckFlag string    `xml:",attr"`
+	StaffID   string    `xml:",attr"`
+	Objects   []Object  `xml:"Objects>Object"`
+	Mappings  []Mapping `xml:"Mappings>Mapping"`
 }
 
 // Actions

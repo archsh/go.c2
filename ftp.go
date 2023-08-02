@@ -1,6 +1,10 @@
 package c2
 
-import "github.com/jlaffaye/ftp"
+import (
+	"github.com/jlaffaye/ftp"
+	"io"
+	"net/url"
+)
 
 // ftp client defines here
 
@@ -34,12 +38,41 @@ func (c *FTPClient) logout() error {
 	}
 }
 
-func (c FTPClient) Get(filename string, output string) error {
-	return nil
+func (c FTPClient) Get(s string, w io.Writer) (int64, error) {
+	if u, e := url.Parse(s); nil != e {
+		return 0, e
+	} else {
+		if nil != u.User {
+			c.username = u.User.Username()
+			if p, b := u.User.Password(); b {
+				c.password = p
+			}
+		}
+		if "" != u.Port() {
+			c.address = u.Host + ":" + u.Port()
+		} else {
+			c.address = u.Host + ":21"
+		}
+		if e := c.login(); nil != e {
+			return 0, e
+		}
+		defer func() { _ = c.logout() }()
+		if resp, e := c.conn.Retr(u.Path); nil != e {
+			return 0, e
+		} else {
+			defer func() { _ = resp.Close() }()
+			return io.Copy(w, resp)
+		}
+	}
 }
 
-func FtpGet(filename string, output string) error {
-	return defaultFTPClient.Get(filename, output)
+func FtpGet(s string, w io.Writer) (int64, error) {
+	return defaultFTPClient.Get(s, w)
+}
+
+func FtpConfig(username string, password string) {
+	defaultFTPClient.username = username
+	defaultFTPClient.password = password
 }
 
 var defaultFTPClient *FTPClient
