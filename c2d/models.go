@@ -14,6 +14,7 @@ type ExecCommandRequest struct {
 	LSPID       string     `xql:"name=lsp_id,size=48"`
 	CmdFileURL  string     `xql:"name=cmd_file_url,size=256"`
 	Status      int        `xql:"name=status,default=0"`
+	Result      string     `xql:"name=result,size=1024,default=''"`
 	Created     *time.Time `xql:"type=timestamp,default=Now()"`
 	Updated     *time.Time `xql:"type=timestamp,default=Now()"`
 }

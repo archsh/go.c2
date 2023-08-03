@@ -36,10 +36,9 @@ var serveCmd = &cobra.Command{
 			log.Println("Connected Database: ", pgconf)
 			db = d
 		}
-
+		go makeTaskHandler(db)()
 		app := fiber.New()
 		app.Use(func(ctx *fiber.Ctx) error {
-			ctx.Locals("db", db)
 			log.Println(ctx.Method(), "", ctx.Path())
 			return ctx.Next()
 		})
