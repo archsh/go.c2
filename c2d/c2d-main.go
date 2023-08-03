@@ -46,6 +46,7 @@ func init() {
 
 func init() {
 	rootCmd.AddCommand(serveCmd)
+	rootCmd.AddCommand(initCmd)
 	rootCmd.AddCommand(testCmd)
 }
 

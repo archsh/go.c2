@@ -5,6 +5,8 @@ import (
 	"fmt"
 	c2 "github.com/archsh/go.c2"
 	xql "github.com/archsh/go.xql"
+	"github.com/sirupsen/logrus"
+	"time"
 )
 
 func makeRequestProcessHandler(db *sql.DB) c2.RequestCmdHandleFunc {
@@ -15,19 +17,29 @@ func makeRequestProcessHandler(db *sql.DB) c2.RequestCmdHandleFunc {
 			CorrelateID: CorrelateID,
 			CmdFileURL:  CmdFileURL,
 		}
-		if session := xql.MakeSession(db, "postgesql", true); nil == session {
+		if session := xql.MakeSession(db, "postgres", true); nil == session {
+			logrus.Errorln("RequestCmdHandleFunc:> create session failed")
 			return fmt.Errorf("create session failed")
-		} else if n, e := session.Table(CmdRequestTable).Where("CorrelateID", CorrelateID).Count(); nil != e {
+		} else if n, e := session.Table(CmdRequestTable).Where("correlate_id", CorrelateID).Count(); nil != e {
+			logrus.Errorln("RequestCmdHandleFunc:>", e)
 			return e
 		} else if n < 1 {
-			if _, e := session.Table(CmdRequestTable).Insert(req); nil != e {
+			if _, e := session.Table(CmdRequestTable).Insert(&req); nil != e {
+				logrus.Errorln("RequestCmdHandleFunc:>", e)
 				return e
 			} else {
 				return nil
 			}
 		} else {
-			_, ee := session.Table(CmdRequestTable).Where("CorrelateID", CorrelateID).Update(map[string]interface{}{"status": 0})
-			return ee
+			if _, ee := session.Table(CmdRequestTable).Where("correlate_id", CorrelateID).Update(map[string]interface{}{
+				"status":  0,
+				"updated": time.Now(),
+			}); nil != ee {
+				logrus.Errorln("RequestCmdHandleFunc:>", ee)
+				return ee
+			} else {
+				return nil
+			}
 		}
 	}
 	return ff

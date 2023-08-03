@@ -1,16 +1,14 @@
 package main
 
 import (
+	"database/sql"
 	"fmt"
 	c2 "github.com/archsh/go.c2"
-	xql "github.com/archsh/go.xql"
 	"github.com/gofiber/fiber/v2"
+	_ "github.com/lib/pq"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 	"log"
-)
-
-var (
-	CmdRequestTable = xql.DeclareTable(&ExecCommandRequest{})
 )
 
 // newCmd represents the version command
@@ -19,43 +17,39 @@ var serveCmd = &cobra.Command{
 	Short: "Run application in serve mode",
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("To be done...")
-		listenAddr, _ := cmd.Flags().GetString("listen")
-		//log.Fatalln(service.Listen(listenAddr))
-		app := fiber.New()
-		app.Post("/soap/exec", c2.MakeRequestCmdHandler(func(CSPID, LSPID, CorrelateID, CmdFileURL string) error {
-			fmt.Println("CSPID:>", CSPID)
-			fmt.Println("LSPID:>", LSPID)
-			fmt.Println("CorrelateID:>", CorrelateID)
-			fmt.Println("CmdFileURL:>", CmdFileURL)
-			if CmdFileURL != "" {
-				if adi, e := c2.FTPGetADI(CmdFileURL); nil != e {
-					fmt.Println("Read ADI failed:", e)
-					return e
-				} else {
-					fmt.Println("Read ADI from CmdFileURL:", CmdFileURL)
-					fmt.Println("> ", adi.BizDomain, adi.CheckFlag, adi.StaffID)
-					for _, obj := range adi.Objects {
-						fmt.Println(">> Object:", obj.ID, obj.ElementType, obj.Action)
-						for _, prop := range obj.Properties {
-							fmt.Println(">>>     ", prop.Name, "=", prop.Value)
-						}
-					}
-					for _, m := range adi.Mappings {
-						fmt.Println(">> Mapping:", m.ElementID, m.ElementCode, m.ElementType, m.ParentID, m.ParentCode, m.ParentType, m.Action)
-						for _, prop := range m.Properties {
-							fmt.Println(">>>     ", prop.Name, "=", prop.Value)
-						}
-					}
-				}
+		var listenAddr = "127.0.0.1:8080"
+		if s, b := cmd.Flags().GetString("listen"); nil != b && s != "" {
+			listenAddr = s
+		} else if ss := viper.GetString("listen"); ss != "" {
+			listenAddr = ss
+		}
+		var pgconf = DefaultPgConfig()
+		var db *sql.DB
+		if viper.InConfig("database") {
+			if e := viper.UnmarshalKey("database", &pgconf); nil != e {
+				log.Fatalln("Read database config failed:", e)
 			}
-			return nil
-		}))
+		}
+		if d, e := ConnectSQL(pgconf.Host, pgconf.Port, pgconf.Username, pgconf.Password, pgconf.DBName, pgconf.SSLMode); nil != e {
+			log.Fatalln("Connect database config failed:", e)
+		} else {
+			log.Println("Connected Database: ", pgconf)
+			db = d
+		}
+
+		app := fiber.New()
+		app.Use(func(ctx *fiber.Ctx) error {
+			ctx.Locals("db", db)
+			log.Println(ctx.Method(), "", ctx.Path())
+			return ctx.Next()
+		})
+		app.Post("/soap/exec", c2.MakeRequestCmdHandler(makeRequestProcessHandler(db)))
 		log.Fatalln(app.Listen(listenAddr))
 	},
 }
 
 func init() {
-	serveCmd.Flags().StringP("listen", "L", "127.0.0.1:8080", "Demo application listen address and port.")
+	serveCmd.Flags().StringP("listen", "L", "", "Demo application listen address and port.")
 	//serveCmd.Flags().StringP("config", "C", "", "Configuration filename.")
 	// rootCmd.AddCommand(newCmd)
 }
