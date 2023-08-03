@@ -5,6 +5,7 @@ import (
 	"context"
 	"crypto/tls"
 	"encoding/xml"
+	"fmt"
 	"io"
 	"log"
 	"math/rand"
@@ -21,10 +22,22 @@ func dialTimeout(t time.Duration) func(ctx context.Context, network, addr string
 }
 
 type SOAPEnvelope[T any] struct {
-	XMLName xml.Name `xml:"http://schemas.xmlsoap.org/soap/envelope/ soapenv:Envelope"`
-	Header  *SOAPHeader
-	Body    SOAPBody[T]
+	XMLName xml.Name `xml:"http://schemas.xmlsoap.org/soap/envelope/ soapenv:Envelope,"`
+	//XmlnsXsi     string   `xml:"xmlns:xsi,attr"`
+	XmlnsXsd     string `xml:"xmlns:xsd,attr"`
+	XmlnsSoapenv string `xml:"xmlns:soapenv,attr"`
+	XmlnsIptv    string `xml:"xmlns:iptv,attr"`
+	Header       *SOAPHeader
+	Body         SOAPBody[T]
 }
+
+//func (b *SOAPEnvelope[T]) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
+//	fmt.Println("UnmarshalXML:>", start.Name)
+//	for _, attr := range start.Attr {
+//		fmt.Println("UnmarshalXML:>", attr.Name.Space, "->", attr.Name.Local, "=", attr.Value)
+//	}
+//	return nil
+//}
 
 type SOAPHeader struct {
 	XMLName xml.Name `xml:"http://schemas.xmlsoap.org/soap/envelope/ Header"`
@@ -146,6 +159,7 @@ func (b *SOAPBody[T]) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error
 	//if b.Content == nil {
 	//	return xml.UnmarshalError("Content must be a pointer to a struct")
 	//}
+	fmt.Println("UnmarshalXML:>", start.Name)
 
 	var (
 		token    xml.Token

@@ -1,7 +1,10 @@
 package c2
 
 import (
+	"bytes"
+	"encoding/xml"
 	"github.com/jlaffaye/ftp"
+	"github.com/sirupsen/logrus"
 	"io"
 	"net/url"
 )
@@ -68,6 +71,20 @@ func (c FTPClient) Get(s string, w io.Writer) (int64, error) {
 
 func FtpGet(s string, w io.Writer) (int64, error) {
 	return defaultFTPClient.Get(s, w)
+}
+
+func FTPGetADI(s string) (ADI, error) {
+	var adi ADI
+	var buf = &bytes.Buffer{}
+	if _, e := FtpGet(s, buf); nil != e {
+		logrus.Errorln("FTPGetADI:>", e)
+		return adi, e
+	} else if e := xml.Unmarshal(buf.Bytes(), &adi); nil != e {
+		logrus.Errorln("FTPGetADI:>", e)
+		return adi, e
+	} else {
+		return adi, nil
+	}
 }
 
 func FtpConfig(username string, password string) {

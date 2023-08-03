@@ -3,6 +3,7 @@ module github.com/archsh/go.c2
 go 1.20
 
 require (
+	github.com/archsh/go.xql v0.5.2
 	github.com/gofiber/fiber/v2 v2.47.0
 	github.com/jlaffaye/ftp v0.2.0
 	github.com/mitchellh/go-homedir v1.1.0
