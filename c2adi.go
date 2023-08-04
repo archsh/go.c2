@@ -394,6 +394,17 @@ var ObjectPropertyMaps map[string]map[string]PropertyDescriptor = map[string]map
 	PICTURE:          l2m(PictureProperties),
 }
 
+func L2M(props []Property) map[string]interface{} {
+	if nil == props {
+		return nil
+	}
+	var m = make(map[string]interface{}, len(props))
+	for _, p := range props {
+		m[p.Name] = p.Value
+	}
+	return m
+}
+
 func NewObject(tp string, id string, action string, properties ...Property) Object {
 	var pdmap map[string]PropertyDescriptor
 	if pds, b := ObjectPropertyMaps[tp]; !b {

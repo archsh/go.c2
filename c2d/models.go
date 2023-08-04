@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-type ExecCommandRequest struct {
+type ExecRequest struct {
 	CorrelateID string     `xql:"name=correlate_id,pk,size=48,nullable=false"`
 	CSPID       string     `xql:"name=csp_id,size=48"`
 	LSPID       string     `xql:"name=lsp_id,size=48"`
@@ -19,8 +19,30 @@ type ExecCommandRequest struct {
 	Updated     *time.Time `xql:"type=timestamp,default=Now()"`
 }
 
-func (r ExecCommandRequest) TableName() string {
-	return "exec_command_requests"
+func (ExecRequest) TableName() string {
+	return "exec_requests"
+}
+
+type C2Object struct {
+	ID          string         `xql:"name=id,pk,size=48,nullable=false"`
+	Code        string         `xql:"name=code,size=48,nullable=false,unique=true"`
+	ElementType string         `xql:"name=type,size=48,nullable=false"`
+	ParentID    string         `xql:"name=parent_id,size=48,nullable=false,default=''"`
+	ParentCode  string         `xql:"name=parent_code,size=48,nullable=false,default=''"`
+	ParentType  string         `xql:"name=parent_type,size=48,nullable=false,default=''"`
+	Properties  JSONDictionary `xql:"name=props,type=JSONB,nullable=true"`
+	MappingType int            `xql:"name=map_type,default=-1"`
+	Sequence    int64          `xql:"name=sequence,default=-1"`
+	ValidStart  *time.Time     `xql:"type=timestamp,nullable=True"`
+	ValidEnd    *time.Time     `xql:"type=timestamp,nullable=True"`
+	Status      int            `xql:"name=status,default=0"`
+	Sync        int            `xql:"name=sync,default=0"`
+	Created     *time.Time     `xql:"type=timestamp,default=Now()"`
+	Updated     *time.Time     `xql:"type=timestamp,default=Now()"`
+}
+
+func (C2Object) TableName() string {
+	return "c2_objects"
 }
 
 type PostgresqlConfig struct {
@@ -54,9 +76,11 @@ func ConnectSQL(host string, port uint16, username string, password string, dbna
 }
 
 var (
-	CmdRequestTable = xql.DeclareTable(&ExecCommandRequest{})
+	CmdRequestTable = xql.DeclareTable(&ExecRequest{})
+	ObjectTable     = xql.DeclareTable(&C2Object{})
 )
 
 var tables = []*xql.Table{
 	CmdRequestTable,
+	ObjectTable,
 }

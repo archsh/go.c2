@@ -11,7 +11,7 @@ import (
 
 func makeRequestProcessHandler(db *sql.DB) c2.RequestCmdHandleFunc {
 	var ff = func(CSPID, LSPID, CorrelateID, CmdFileURL string) error {
-		var req = ExecCommandRequest{
+		var req = ExecRequest{
 			CSPID:       CSPID,
 			LSPID:       LSPID,
 			CorrelateID: CorrelateID,
