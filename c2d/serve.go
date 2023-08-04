@@ -36,7 +36,19 @@ var serveCmd = &cobra.Command{
 			log.Println("Connected Database: ", pgconf)
 			db = d
 		}
-		go makeTaskHandler(db)()
+		go makeADITaskHandler(db)()
+		if viper.InConfig("volcengine") {
+			var vc VolEngineConfig
+			if e := viper.UnmarshalKey("", &vc); nil != e {
+				log.Fatalln("Read volcengine config failed:", e)
+			}
+			if c, e := setupVolClient(vc); nil != e {
+				log.Fatalln("Setup volcengine failed:", e)
+			} else {
+				go makeSyncTaskHandler(c, db)()
+			}
+		}
+
 		app := fiber.New()
 		app.Use(func(ctx *fiber.Ctx) error {
 			log.Println(ctx.Method(), "", ctx.Path())

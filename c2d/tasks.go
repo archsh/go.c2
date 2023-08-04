@@ -8,11 +8,14 @@ import (
 	"time"
 )
 
-func makeTaskHandler(db *sql.DB) func() {
+func makeADITaskHandler(db *sql.DB) func() {
 	var f = func() {
 		for {
 			session := xql.MakeSession(db, "postgres", true)
-			if n, e := session.Table(CmdRequestTable).Where("status", 0, "=").Count(); nil != e {
+			var filters = []interface{}{
+				xql.Where("status", 0, "="),
+			}
+			if n, e := session.Table(CmdRequestTable).Filter(filters...).Count(); nil != e {
 				logrus.Errorln("Count failed:", e)
 				session.Close()
 				time.Sleep(time.Minute)
@@ -20,7 +23,7 @@ func makeTaskHandler(db *sql.DB) func() {
 				time.Sleep(time.Second * 15)
 			} else {
 				var req ExecRequest
-				if e := session.Table(CmdRequestTable).Where("status", 0, "=").OrderBy("created").Limit(1).One().Scan(&req); nil != e {
+				if e := session.Table(CmdRequestTable).Filter(filters...).OrderBy("created").Limit(1).One().Scan(&req); nil != e {
 					logrus.Errorln("Select failed:", e)
 					session.Close()
 					continue
