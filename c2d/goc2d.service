@@ -1,0 +1,8 @@
+[Unit]
+Description=C2 Daemon Service
+
+[Service]
+ExecStart=/usr/sbin/goc2d --config /etc/goc2d.yml serve
+
+[Install]
+WantedBy=multi-user.target

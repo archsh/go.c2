@@ -2,7 +2,7 @@ package main
 
 import (
 	"database/sql"
-	xql "github.com/archsh/go.xql"
+	"github.com/archsh/go.xql"
 	"github.com/sirupsen/logrus"
 	"github.com/volcengine/volcengine-sdk-go-rec/byteair"
 	"github.com/volcengine/volcengine-sdk-go-rec/core"

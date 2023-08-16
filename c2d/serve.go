@@ -54,7 +54,7 @@ var serveCmd = &cobra.Command{
 			log.Println(ctx.Method(), "", ctx.Path())
 			return ctx.Next()
 		})
-		app.Post("/soap/exec", c2.MakeRequestCmdHandler(makeRequestProcessHandler(db)))
+		app.Post("/", c2.MakeRequestCmdHandler(makeRequestProcessHandler(db)))
 		log.Fatalln(app.Listen(listenAddr))
 	},
 }

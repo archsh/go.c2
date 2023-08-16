@@ -46,12 +46,12 @@ func (C2Object) TableName() string {
 }
 
 type PostgresqlConfig struct {
-	Host     string
-	Port     uint16
-	Username string
-	Password string
-	DBName   string
-	SSLMode  string
+	Host     string `yaml:"host"`
+	Port     uint16 `yaml:"port"`
+	Username string `yaml:"username"`
+	Password string `yaml:"password"`
+	DBName   string `yaml:"db-name"`
+	SSLMode  string `yaml:"ssl-mode"`
 }
 
 func DefaultPgConfig() PostgresqlConfig {
