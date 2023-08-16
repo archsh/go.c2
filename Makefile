@@ -13,4 +13,4 @@ init: goc2d
 	@./goc2d init
 goc2d: Makefile *.go c2d/*.go
 	@echo "Building $@ ..."
-	@go build -o $@ ./c2d
+	@CGO_ENABLED=0 go build -o $@ ./c2d
