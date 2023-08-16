@@ -23,6 +23,12 @@ var serveCmd = &cobra.Command{
 		} else if ss := viper.GetString("listen"); ss != "" {
 			listenAddr = ss
 		}
+		var c2conf C2Config
+		if viper.InConfig("c2") {
+			if e := viper.UnmarshalKey("c2", &c2conf); nil != e {
+				log.Fatalln("Read c2 config failed:", e)
+			}
+		}
 		var pgconf = DefaultPgConfig()
 		var db *sql.DB
 		if viper.InConfig("database") {
@@ -36,7 +42,7 @@ var serveCmd = &cobra.Command{
 			log.Println("Connected Database: ", pgconf)
 			db = d
 		}
-		go makeADITaskHandler(db)()
+		go makeADITaskHandler(db, c2conf)()
 		if viper.InConfig("volcengine") {
 			var vc VolEngineConfig
 			if e := viper.UnmarshalKey("", &vc); nil != e {
@@ -45,7 +51,7 @@ var serveCmd = &cobra.Command{
 			if c, e := setupVolClient(vc); nil != e {
 				log.Fatalln("Setup volcengine failed:", e)
 			} else {
-				go makeSyncTaskHandler(c, db)()
+				go makeSyncTaskHandler(c, db, c2conf)()
 			}
 		}
 
@@ -54,7 +60,7 @@ var serveCmd = &cobra.Command{
 			log.Println(ctx.Method(), "", ctx.Path())
 			return ctx.Next()
 		})
-		app.Post("/", c2.MakeRequestCmdHandler(makeRequestProcessHandler(db)))
+		app.Post("/", c2.MakeRequestCmdHandler(makeRequestProcessHandler(db, c2conf)))
 		log.Fatalln(app.Listen(listenAddr))
 	},
 }

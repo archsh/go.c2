@@ -7,3 +7,7 @@ database:
   username: postgres
   password: postgres
 
+c2:
+  cspid: SXBK
+  lspid: HSDJ
+  notify: http://172.18.21.10:6060

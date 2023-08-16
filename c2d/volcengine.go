@@ -41,7 +41,7 @@ func setupVolClient(vc VolEngineConfig) (byteair.Client, error) {
 	}
 }
 
-func makeSyncTaskHandler(client byteair.Client, db *sql.DB) func() {
+func makeSyncTaskHandler(client byteair.Client, db *sql.DB, c2conf C2Config) func() {
 	var f = func() {
 		for {
 			session := xql.MakeSession(db, "postgres", true)

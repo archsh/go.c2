@@ -45,6 +45,12 @@ func (C2Object) TableName() string {
 	return "c2_objects"
 }
 
+type C2Config struct {
+	CSPID  string `yaml:"cspid"`
+	LSPID  string `yaml:"lspid"`
+	Notify string `yaml:"notify"`
+}
+
 type PostgresqlConfig struct {
 	Host     string `yaml:"host"`
 	Port     uint16 `yaml:"port"`

@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-func makeADITaskHandler(db *sql.DB) func() {
+func makeADITaskHandler(db *sql.DB, c2conf C2Config) func() {
 	var f = func() {
 		for {
 			session := xql.MakeSession(db, "postgres", true)

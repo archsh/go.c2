@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-func makeRequestProcessHandler(db *sql.DB) c2.RequestCmdHandleFunc {
+func makeRequestProcessHandler(db *sql.DB, c2conf C2Config) c2.RequestCmdHandleFunc {
 	var ff = func(CSPID, LSPID, CorrelateID, CmdFileURL string) error {
 		var req = ExecRequest{
 			CSPID:       CSPID,
