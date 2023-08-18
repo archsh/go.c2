@@ -43,6 +43,7 @@ func (c *FTPClient) logout() error {
 
 func (c FTPClient) Get(s string, w io.Writer) (int64, error) {
 	if u, e := url.Parse(s); nil != e {
+		logrus.Errorln("FTPClient::Get> url.Parse failed: ", e, s)
 		return 0, e
 	} else {
 		if nil != u.User {
@@ -52,15 +53,19 @@ func (c FTPClient) Get(s string, w io.Writer) (int64, error) {
 			}
 		}
 		if "" != u.Port() {
-			c.address = u.Host + ":" + u.Port()
+			logrus.Warnln("======================", u.Host, u.Port())
+			c.address = u.Host //+ ":" + u.Port()
 		} else {
+			logrus.Warnln("----------------------", u.Host, u.Port())
 			c.address = u.Host + ":21"
 		}
 		if e := c.login(); nil != e {
+			logrus.Errorln("FTPClient::Get> login failed: ", e, c.address, c.username, c.password)
 			return 0, e
 		}
 		defer func() { _ = c.logout() }()
 		if resp, e := c.conn.Retr(u.Path); nil != e {
+			logrus.Errorln("FTPClient::Get> conn.Retr failed: ", e, u.Path)
 			return 0, e
 		} else {
 			defer func() { _ = resp.Close() }()
