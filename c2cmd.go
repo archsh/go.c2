@@ -20,7 +20,7 @@ import "encoding/xml"
 </soapenv:Envelope>
 */
 type ExecCmdReq struct {
-	XMLName     xml.Name `xml:"http://schemas.xmlsoap.org/soap/envelope/ ExecCmd"`
+	XMLName     xml.Name `xml:"http://schemas.xmlsoap.org/soap/envelope/ iptv:ExecCmd"`
 	CSPID       string
 	LSPID       string
 	CorrelateID string
@@ -43,8 +43,8 @@ type ExecCmdReq struct {
 </soapenv:Envelope>
 */
 type ExecCmdResponse struct {
-	XMLName          xml.Name `xml:"http://schemas.xmlsoap.org/soap/envelope/ ExecCmdResponse"`
-	Result           int
+	XMLName          xml.Name `xml:"http://schemas.xmlsoap.org/soap/envelope/ iptv:ExecCmdResponse"`
+	Result           string
 	ErrorDescription string
 }
 
@@ -65,7 +65,7 @@ type ExecCmdResponse struct {
 </soapenv:Envelope>
 */
 type ResultNotifyReq struct {
-	XMLName       xml.Name `xml:"http://schemas.xmlsoap.org/soap/envelope/ ResultNotify"`
+	XMLName       xml.Name `xml:"http://schemas.xmlsoap.org/soap/envelope/ iptv:ResultNotify"`
 	CSPID         string
 	LSPID         string
 	CorrelateID   string
@@ -89,7 +89,7 @@ type ResultNotifyReq struct {
 </soapenv:Envelope>
 */
 type ResultNotifyResponse struct {
-	XMLName          xml.Name `xml:"http://schemas.xmlsoap.org/soap/envelope/ ResultNotifyResponse"`
+	XMLName          xml.Name `xml:"http://schemas.xmlsoap.org/soap/envelope/ iptv:ResultNotifyResponse"`
 	Result           int
 	ErrorDescription string
 }

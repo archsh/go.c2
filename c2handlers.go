@@ -2,6 +2,7 @@ package c2
 
 import (
 	"encoding/xml"
+	"fmt"
 	"github.com/gofiber/fiber/v2"
 	"github.com/sirupsen/logrus"
 )
@@ -54,16 +55,16 @@ func MakeRequestCmdHandler(f RequestCmdHandleFunc) func(ctx *fiber.Ctx) error {
 			}
 			logrus.Debugln("===================================================")
 			_ = ctx.SendStatus(fiber.StatusBadRequest)
-			resp.Body.Content.Result = fiber.StatusBadRequest
+			resp.Body.Content.Result = fmt.Sprint(fiber.StatusBadRequest)
 			resp.Body.Content.ErrorDescription = e.Error()
 
 		} else if nil == envelope.Body.Content {
 			_ = ctx.SendStatus(fiber.StatusBadRequest)
-			resp.Body.Content.Result = fiber.StatusBadRequest
+			resp.Body.Content.Result = fmt.Sprint(fiber.StatusBadRequest)
 			resp.Body.Content.ErrorDescription = "Missing content body"
 		} else if e := f(envelope.Body.Content.CSPID, envelope.Body.Content.LSPID, envelope.Body.Content.CorrelateID, envelope.Body.Content.CmdFileURL); nil != e {
 			_ = ctx.SendStatus(fiber.StatusInternalServerError)
-			resp.Body.Content.Result = fiber.StatusInternalServerError
+			resp.Body.Content.Result = fmt.Sprint(fiber.StatusInternalServerError)
 			resp.Body.Content.ErrorDescription = e.Error()
 		} else {
 			if bs, e := xml.MarshalIndent(envelope, "", " "); nil == e {
@@ -71,10 +72,17 @@ func MakeRequestCmdHandler(f RequestCmdHandleFunc) func(ctx *fiber.Ctx) error {
 			} else {
 				logrus.Debugf("%+v\n", envelope)
 			}
-			resp.Body.Content.Result = 0
-			resp.Body.Content.ErrorDescription = ""
+			resp.Body.Content.Result = ""
+			resp.Body.Content.ErrorDescription = "Success"
 		}
-		return ctx.XML(resp)
+		if bs, e := xml.MarshalIndent(resp, "", " "); nil != e {
+			return e
+		} else {
+			_, _ = ctx.WriteString(xml.Header)
+			_, _ = ctx.Write(bs)
+			ctx.Response().Header.SetContentType(fiber.MIMEApplicationXML)
+		}
+		return nil // ctx.XML(resp)
 	}
 	return ff
 }
