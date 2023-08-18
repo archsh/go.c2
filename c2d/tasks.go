@@ -71,11 +71,16 @@ func saveADI(session *xql.Session, adi c2.ADI) error {
 				ElementType: obj.ElementType,
 				Properties:  c2.L2M(obj.Properties),
 			}
-			if n, e := session.Table(ObjectTable).Insert(&c2obj); nil != e {
-				logrus.Errorln("Insert Object failed:>", e)
+			if n, e := session.Table(ObjectTable).Where("id", c2obj.ID).Count("id"); nil != e {
+				logrus.Errorln("Count Object failed:>", e)
 				return e
-			} else {
-				logrus.Infoln("Inserted Object:>", c2obj.ElementType, c2obj.ID, c2obj.Code, n)
+			} else if n < 1 {
+				if n, e := session.Table(ObjectTable).Insert(&c2obj); nil != e {
+					logrus.Errorln("Insert Object failed:>", e)
+					return e
+				} else {
+					logrus.Infoln("Inserted Object:>", c2obj.ElementType, c2obj.ID, c2obj.Code, n)
+				}
 			}
 		case c2.UPDATE: // Update
 			var c2obj C2Object
