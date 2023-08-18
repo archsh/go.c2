@@ -22,7 +22,7 @@ func dialTimeout(t time.Duration) func(ctx context.Context, network, addr string
 }
 
 type SOAPEnvelope[T any] struct {
-	XMLName xml.Name `xml:"http://schemas.xmlsoap.org/soap/envelope/ soapenv:Envelope,"`
+	XMLName xml.Name `xml:"http://schemas.xmlsoap.org/soap/envelope/ Envelope"`
 	//XmlnsXsi     string   `xml:"xmlns:xsi,attr"`
 	XmlnsXsd     string `xml:"xmlns:xsd,attr"`
 	XmlnsSoapenv string `xml:"xmlns:soapenv,attr"`
@@ -46,7 +46,7 @@ type SOAPHeader struct {
 }
 
 type SOAPBody[T any] struct {
-	XMLName xml.Name `xml:"http://schemas.xmlsoap.org/soap/envelope/ soapenv:Body"`
+	XMLName xml.Name `xml:"http://schemas.xmlsoap.org/soap/envelope/ Body"`
 
 	Fault   *SOAPFault `xml:",omitempty"`
 	Content T          `xml:",omitempty"`
