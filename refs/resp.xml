@@ -1,13 +1,13 @@
 <?xml vension="1.0" encoding="utf-8"?>
 <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soapenvelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<soapenv:Body>
-		<ns1:ExecCmdResponse soapenv:encodingStyle="http://schemas,xmlsoap.ong/soapencoding/"xmlns:ns1="iptv">
+		<ns1:ExecCmdResponse soapenv:encodingStyle="http://schemas.xmlsoap.ong/soapencoding/" xmlns:ns1="iptv">
 			<ExecCmdReturn href="#id0"/>
 		</ns1:ExecCmdResponse>
 		<multiRef id="id0" soapenc:root="0" soapenv:encodingstyle="http://schemas.xmlsoap.org/soap/encoding/" xsi:type="ns2:CSPResult" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:ns2="iptv">
 			<Result href="#id1"/>
 			<ErrorDescription xsi:type="soapenc:string">Success</ErrorDescription>
 		</multiRef>
-		<multiRef id="id1" soapenc:root="0" soapenv:encoding5tyle="http://schemas,xmlsoap.org/soap/encoding/" xsi:type="xsd:int" xmlns:soapenc="http://schemas,xmlsoap,org/soap/encoding/">0</multiRef>
+		<multiRef id="id1" soapenc:root="0" soapenv:encoding5tyle="http://schemas.xmlsoap.org/soap/encoding/" xsi:type="xsd:int" xmlns:soapenc="http://schemas,xmlsoap,org/soap/encoding/">0</multiRef>
 	</soapenv:Body>
 </soapenv:Envelope>

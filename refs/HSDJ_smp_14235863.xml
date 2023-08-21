@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<ADI StaffID="999999999" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+  <Objects>
+    <Object Action="REGIST" Code="LZTVDXc1ac5f4d0389e7b15c293c90bd" ElementType="Program" ID="LZTVDXc1ac5f4d0389e7b15c293c90bd">
+      <Property Name="CPID">荔枝tv</Property>
+      <Property Name="ContentProvider">荔枝tv</Property>
+      <Property Name="CopyRight">荔枝tv</Property>
+      <Property Name="Description">【荔枝TV提供】主厨的荣耀 中餐季 宣传片@@@LZTV</Property>
+      <Property Name="Duration">1</Property>
+      <Property Name="Duration1">1500</Property>
+      <Property Name="Framerate">25</Property>
+      <Property Name="Genre">综艺</Property>
+      <Property Name="LicensingWindowEnd">20241002000000</Property>
+      <Property Name="LicensingWindowStart">20201019000000</Property>
+      <Property Name="Macrovision">0</Property>
+      <Property Name="Name">主厨的荣耀 中餐季 宣传片</Property>
+      <Property Name="OriginalCountry">其他</Property>
+      <Property Name="PgmCategory">综艺</Property>
+      <Property Name="PgmSndClass">综艺</Property>
+      <Property Name="PriceTaxIn">0.00</Property>
+      <Property Name="ReleaseYear">2023</Property>
+      <Property Name="SPCode">LZTV</Property>
+      <Property Name="SearchName">zcdry</Property>
+      <Property Name="SeriesFlag">0</Property>
+      <Property Name="SourceType">1</Property>
+      <Property Name="Status">1</Property>
+      <Property Name="Type">综艺</Property>
+      <Property Name="VSPCode">LZTV</Property>
+    </Object>
+    <Object Action="REGIST" Code="86369e94422647feb3cc5575b472aaba" ElementType="Movie" ID="86369e94422647feb3cc5575b472aaba">
+      <Property Name="BizDomain">0</Property>
+      <Property Name="FileURL">ftp://iptv:iptv123@172.18.11.10:21//vod/dell-vod4/2023/07/27/4892131.ts</Property>
+      <Property Name="MediaSpec">TS-VBR-H.264-20000-720P-25-MP2-32</Property>
+      <Property Name="MovieHeadDuration">0</Property>
+      <Property Name="MovieTailDuration">0</Property>
+      <Property Name="Name">主厨的荣耀 中餐季 宣传片</Property>
+      <Property Name="Type">1</Property>
+    </Object>
+  </Objects>
+
+  <Mappings>
+    <Mapping Action="REGIST" ElementCode="86369e94422647feb3cc5575b472aaba" ElementID="86369e94422647feb3cc5575b472aaba" ElementType="Movie" ParentCode="LZTVDXc1ac5f4d0389e7b15c293c90bd" ParentID="LZTVDXc1ac5f4d0389e7b15c293c90bd" ParentType="Program"/>
+  </Mappings>
+
+</ADI>

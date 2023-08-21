@@ -2,7 +2,6 @@ package c2
 
 import (
 	"encoding/xml"
-	"fmt"
 	"github.com/gofiber/fiber/v2"
 	"github.com/sirupsen/logrus"
 )
@@ -18,7 +17,7 @@ type ExecCmdReqEnvelope struct {
 		Items   []interface{} `xml:",omitempty"`
 	} `xml:",omitempty"`
 	Body struct {
-		XMLName xml.Name `Body"`
+		XMLName xml.Name `"Body"`
 
 		Fault *struct {
 			XMLName xml.Name `xml:"Fault"`
@@ -43,6 +42,18 @@ func MakeRequestCmdHandler(f RequestCmdHandleFunc) func(ctx *fiber.Ctx) error {
 	var ff = func(ctx *fiber.Ctx) error {
 		var envelope = ExecCmdReqEnvelope{}
 		var resp SOAPEnvelope[ExecCmdResponse]
+		//resp.Soapenv = SOAPENV
+		//resp.Xsi = XSI
+		//resp.Xsd = XSD
+		//resp.NS = NS1
+		//resp.Body.Content.EncodingStyle = EncodingStyle
+		//resp.Body.Content.NS1 = NS1
+		//resp.Body.Content.ExecCmdReturn.Type = "ns2:CSPResult"
+		//resp.Body.Content.ExecCmdReturn.EncodingStyle = EncodingStyle
+		//resp.Body.Content.ExecCmdReturn.NS2 = "iptv"
+		//resp.Body.Content.ExecCmdReturn.Soapenc = SOAPENC
+		//resp.Body.Content.ExecCmdReturn.Result.Type = XSD_INT
+		//resp.Body.Content.ExecCmdReturn.ErrorDescription.Type = SOAPENC_STR
 		if e := xml.Unmarshal(ctx.Body(), &envelope); nil != e {
 			logrus.Errorln("HandleRequestCmd:> unmarshal failed:", e)
 			logrus.Debugln("===================================================")
@@ -55,25 +66,29 @@ func MakeRequestCmdHandler(f RequestCmdHandleFunc) func(ctx *fiber.Ctx) error {
 			}
 			logrus.Debugln("===================================================")
 			_ = ctx.SendStatus(fiber.StatusBadRequest)
-			resp.Body.Content.Result = fmt.Sprint(fiber.StatusBadRequest)
-			resp.Body.Content.ErrorDescription = e.Error()
+			resp = NewExecCmdResponse(fiber.StatusBadRequest, e.Error())
+			//resp.Body.Content.ExecCmdReturn.Result.Value = fmt.Sprint(fiber.StatusBadRequest)
+			//resp.Body.Content.ExecCmdReturn.ErrorDescription.Value = e.Error()
 
 		} else if nil == envelope.Body.Content {
 			_ = ctx.SendStatus(fiber.StatusBadRequest)
-			resp.Body.Content.Result = fmt.Sprint(fiber.StatusBadRequest)
-			resp.Body.Content.ErrorDescription = "Missing content body"
+			resp = NewExecCmdResponse(fiber.StatusBadRequest, "Missing content body")
+			//resp.Body.Content.ExecCmdReturn.Result.Value = fmt.Sprint(fiber.StatusBadRequest)
+			//resp.Body.Content.ExecCmdReturn.ErrorDescription.Value = "Missing content body"
 		} else if e := f(envelope.Body.Content.CSPID, envelope.Body.Content.LSPID, envelope.Body.Content.CorrelateID, envelope.Body.Content.CmdFileURL); nil != e {
 			_ = ctx.SendStatus(fiber.StatusInternalServerError)
-			resp.Body.Content.Result = fmt.Sprint(fiber.StatusInternalServerError)
-			resp.Body.Content.ErrorDescription = e.Error()
+			resp = NewExecCmdResponse(fiber.StatusInternalServerError, e.Error())
+			//resp.Body.Content.ExecCmdReturn.Result.Value = fmt.Sprint(fiber.StatusInternalServerError)
+			//resp.Body.Content.ExecCmdReturn.ErrorDescription.Value = e.Error()
 		} else {
 			if bs, e := xml.MarshalIndent(envelope, "", " "); nil == e {
 				logrus.Debugf("%s\n", string(bs))
 			} else {
 				logrus.Debugf("%+v\n", envelope)
 			}
-			resp.Body.Content.Result = ""
-			resp.Body.Content.ErrorDescription = "Success"
+			resp = NewExecCmdResponse(0, "Success")
+			//resp.Body.Content.ExecCmdReturn.Result.Value = ""
+			//resp.Body.Content.ExecCmdReturn.ErrorDescription.Value = "Success"
 		}
 		if bs, e := xml.MarshalIndent(resp, "", " "); nil != e {
 			return e

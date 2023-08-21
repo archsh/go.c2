@@ -23,12 +23,12 @@ func dialTimeout(t time.Duration) func(ctx context.Context, network, addr string
 
 type SOAPEnvelope[T any] struct {
 	XMLName xml.Name `xml:"http://schemas.xmlsoap.org/soap/envelope/ soapenv:Envelope,"`
-	//XmlnsXsi     string   `xml:"xmlns:xsi,attr"`
-	XmlnsXsd     string `xml:"xmlns:xsd,attr"`
-	XmlnsSoapenv string `xml:"xmlns:soapenv,attr"`
-	XmlnsIptv    string `xml:"xmlns:iptv,attr"`
-	Header       *SOAPHeader
-	Body         SOAPBody[T]
+	Soapenv string   `xml:"xmlns:soapenv,attr,omitempty"`
+	Xsd     string   `xml:"xmlns:xsd,attr,omitempty"`
+	Xsi     string   `xml:"xmlns:xsi,attr,omitempty"`
+	NS      string   `xml:"xmlns:iptv,attr,omitempty"`
+	Header  *SOAPHeader
+	Body    SOAPBody[T]
 }
 
 //func (b *SOAPEnvelope[T]) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
@@ -49,7 +49,7 @@ type SOAPBody[T any] struct {
 	XMLName xml.Name `xml:"http://schemas.xmlsoap.org/soap/envelope/ soapenv:Body"`
 
 	Fault   *SOAPFault `xml:",omitempty"`
-	Content T          `xml:",omitempty"`
+	Content *T         `xml:",omitempty"`
 }
 
 type SOAPFault struct {
@@ -236,7 +236,7 @@ func (s *SOAPClient) AddHeader(header interface{}) {
 
 func NewEnvelope[T any](t T) SOAPEnvelope[T] {
 	var e SOAPEnvelope[T]
-	e.Body = SOAPBody[T]{Content: t}
+	e.Body = SOAPBody[T]{Content: &t}
 	return e
 }
 
@@ -249,7 +249,7 @@ func (s *SOAPClient) Call(soapAction string, request, response interface{}) erro
 		envelope.Header = soapHeader
 	}
 
-	envelope.Body.Content = request
+	envelope.Body.Content = &request
 	buffer := new(bytes.Buffer)
 
 	encoder := xml.NewEncoder(buffer)
