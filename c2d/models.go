@@ -45,6 +45,18 @@ func (C2Object) TableName() string {
 	return "c2_objects"
 }
 
+type LoggingConfig struct {
+	Level    string `yaml:"level"`
+	Filename string `yaml:"filename"`
+}
+
+func DefaultLoggingConfig() LoggingConfig {
+	return LoggingConfig{
+		Level:    "debug",
+		Filename: "/var/log/goc2d.log",
+	}
+}
+
 type C2Config struct {
 	CSPID  string `yaml:"cspid"`
 	LSPID  string `yaml:"lspid"`

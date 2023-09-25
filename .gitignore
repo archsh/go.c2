@@ -1,2 +1,4 @@
 .idea/
 goc2d
+*.log
+*.txt

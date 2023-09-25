@@ -6,9 +6,10 @@ import (
 	c2 "github.com/archsh/go.c2"
 	"github.com/gofiber/fiber/v2"
 	_ "github.com/lib/pq"
+	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	"log"
+	"os"
 )
 
 // newCmd represents the version command
@@ -23,6 +24,26 @@ var serveCmd = &cobra.Command{
 		} else if ss := viper.GetString("listen"); ss != "" {
 			listenAddr = ss
 		}
+		var logCfg = DefaultLoggingConfig()
+		if viper.InConfig("logging") {
+			if e := viper.UnmarshalKey("logging", &logCfg); nil != e {
+				log.Fatalln("Read logging config failed:", e)
+			}
+		}
+		if lvl, e := log.ParseLevel(logCfg.Level); nil != e {
+			log.SetLevel(log.DebugLevel)
+		} else {
+			log.SetLevel(lvl)
+		}
+		if logCfg.Filename == "" {
+			log.SetOutput(os.Stdout)
+		} else if fp, e := os.OpenFile(logCfg.Filename, os.O_APPEND|os.O_CREATE|os.O_WRONLY, os.ModePerm); nil != e {
+			log.Fatalln("Open log filename failed:", e)
+		} else {
+			defer fp.Close()
+			log.SetOutput(fp)
+		}
+
 		var c2conf C2Config
 		if viper.InConfig("c2") {
 			if e := viper.UnmarshalKey("c2", &c2conf); nil != e {

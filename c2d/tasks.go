@@ -4,19 +4,20 @@ import (
 	"database/sql"
 	c2 "github.com/archsh/go.c2"
 	xql "github.com/archsh/go.xql"
-	"github.com/sirupsen/logrus"
+	log "github.com/sirupsen/logrus"
 	"time"
 )
 
 func makeADITaskHandler(db *sql.DB, c2conf C2Config) func() {
 	var f = func() {
+		log.Infoln("Starting ADI task ...")
 		for {
 			session := xql.MakeSession(db, "postgres", true)
 			var filters = []interface{}{
 				xql.Where("status", 0, "="),
 			}
 			if n, e := session.Table(CmdRequestTable).Filter(filters...).Count(); nil != e {
-				logrus.Errorln("Count failed:", e)
+				log.Errorln("Count failed:", e)
 				session.Close()
 				time.Sleep(time.Minute)
 			} else if n < 1 {
@@ -24,22 +25,22 @@ func makeADITaskHandler(db *sql.DB, c2conf C2Config) func() {
 			} else {
 				var req ExecRequest
 				if e := session.Table(CmdRequestTable).Filter(filters...).OrderBy("created").Limit(1).One().Scan(&req); nil != e {
-					logrus.Errorln("Select failed:", e)
+					log.Errorln("Select failed:", e)
 					session.Close()
 					continue
 				}
 				if e := session.Begin(); nil != e {
-					logrus.Errorln("Session begin:", e)
+					log.Errorln("Session begin:", e)
 					session.Close()
 					continue
 				}
 				var up = make(map[string]interface{}, 3)
 				if adi, e := c2.FTPGetADI(req.CmdFileURL); nil != e {
-					logrus.Errorln("Get ADI failed:>", e)
+					log.Errorln("Get ADI failed:>", e)
 					up["status"] = -1
 					up["result"] = e.Error()
 				} else if e := saveADI(session, adi); nil != e {
-					logrus.Errorln("Save ADI failed:>", e)
+					log.Errorln("Save ADI failed:>", e)
 					up["status"] = -2
 					up["result"] = e.Error()
 				} else {
@@ -48,7 +49,7 @@ func makeADITaskHandler(db *sql.DB, c2conf C2Config) func() {
 				up["updated"] = time.Now()
 				_, _ = session.Table(CmdRequestTable).Where("correlate_id", req.CorrelateID).Update(up)
 				if e := session.Commit(); nil != e {
-					logrus.Errorln("Session begin:", e)
+					log.Errorln("Session begin:", e)
 					_ = session.Rollback()
 				}
 				// Notify CMS SOAP ...
@@ -60,9 +61,9 @@ func makeADITaskHandler(db *sql.DB, c2conf C2Config) func() {
 }
 
 func saveADI(session *xql.Session, adi c2.ADI) error {
-	logrus.Infoln("Saving ADI:>", adi.BizDomain, adi.CheckFlag, adi.StaffID)
+	log.Infoln("Saving ADI:>", adi.BizDomain, adi.CheckFlag, adi.StaffID)
 	for _, obj := range adi.Objects {
-		logrus.Infoln("Processing Object:>", obj.Action, obj.ElementType, obj.ID, obj.Code)
+		log.Infoln("Processing Object:>", obj.Action, obj.ElementType, obj.ID, obj.Code)
 		switch obj.Action {
 		case c2.REGIST: // Register
 			var c2obj = C2Object{
@@ -72,20 +73,20 @@ func saveADI(session *xql.Session, adi c2.ADI) error {
 				Properties:  c2.L2M(obj.Properties),
 			}
 			if n, e := session.Table(ObjectTable).Where("id", c2obj.ID).Count("id"); nil != e {
-				logrus.Errorln("Count Object failed:>", e)
+				log.Errorln("Count Object failed:>", e)
 				return e
 			} else if n < 1 {
 				if n, e := session.Table(ObjectTable).Insert(&c2obj); nil != e {
-					logrus.Errorln("Insert Object failed:>", e)
+					log.Errorln("Insert Object failed:>", e)
 					return e
 				} else {
-					logrus.Infoln("Inserted Object:>", c2obj.ElementType, c2obj.ID, c2obj.Code, n)
+					log.Infoln("Inserted Object:>", c2obj.ElementType, c2obj.ID, c2obj.Code, n)
 				}
 			}
 		case c2.UPDATE: // Update
 			var c2obj C2Object
 			if e := session.Table(ObjectTable).Get(obj.ID).Scan(&c2obj); nil != e {
-				logrus.Errorln("Get Object failed:>", e)
+				log.Errorln("Get Object failed:>", e)
 				return e
 			} else {
 				var up = make(map[string]interface{}, 3)
@@ -93,16 +94,16 @@ func saveADI(session *xql.Session, adi c2.ADI) error {
 				up["props"] = c2.L2M(obj.Properties)
 				up["sync"] = 0
 				if n, e := session.Table(ObjectTable).Where("id", obj.ID).Where("type", obj.ElementType).Update(up); nil != e {
-					logrus.Errorln("Update Object failed:>", e)
+					log.Errorln("Update Object failed:>", e)
 					return e
 				} else {
-					logrus.Infoln("Updated Object:>", c2obj.ElementType, c2obj.ID, c2obj.Code, n)
+					log.Infoln("Updated Object:>", c2obj.ElementType, c2obj.ID, c2obj.Code, n)
 				}
 			}
 		case c2.DELETE: // Delete
 			var c2obj C2Object
 			if e := session.Table(ObjectTable).Get(obj.ID).Scan(&c2obj); nil != e {
-				logrus.Errorln("Get Object failed:>", e)
+				log.Errorln("Get Object failed:>", e)
 				return e
 			} else {
 				var up = make(map[string]interface{}, 3)
@@ -110,22 +111,22 @@ func saveADI(session *xql.Session, adi c2.ADI) error {
 				up["status"] = -1
 				up["sync"] = 0
 				if n, e := session.Table(ObjectTable).Where("id", obj.ID).Where("type", obj.ElementType).Update(up); nil != e {
-					logrus.Errorln("Delete Object failed:>", e)
+					log.Errorln("Delete Object failed:>", e)
 					return e
 				} else {
-					logrus.Infoln("Delete Object:>", c2obj.ElementType, c2obj.ID, c2obj.Code, n)
+					log.Infoln("Delete Object:>", c2obj.ElementType, c2obj.ID, c2obj.Code, n)
 				}
 			}
 		}
 	}
 
 	for _, m := range adi.Mappings {
-		logrus.Infoln("Processing Mapping:>", m.Action, m.ElementType, m.ElementID, m.ElementCode)
+		log.Infoln("Processing Mapping:>", m.Action, m.ElementType, m.ElementID, m.ElementCode)
 		switch m.Action {
 		case c2.REGIST, c2.UPDATE:
 			var c2obj C2Object
 			if e := session.Table(ObjectTable).Get(m.ElementID).Scan(&c2obj); nil != e {
-				logrus.Errorln("Get Object failed:>", e)
+				log.Errorln("Get Object failed:>", e)
 				return e
 			}
 			var up = make(map[string]interface{})
@@ -146,15 +147,15 @@ func saveADI(session *xql.Session, adi c2.ADI) error {
 				}
 			}
 			if n, e := session.Table(ObjectTable).Where("id", m.ElementID).Where("type", m.ElementType).Update(up); nil != e {
-				logrus.Errorln("Mapping Object failed:>", e)
+				log.Errorln("Mapping Object failed:>", e)
 				return e
 			} else {
-				logrus.Infoln("Mapping Object:>", c2obj.ElementType, c2obj.ID, c2obj.Code, n)
+				log.Infoln("Mapping Object:>", c2obj.ElementType, c2obj.ID, c2obj.Code, n)
 			}
 		case c2.DELETE:
 			var c2obj C2Object
 			if e := session.Table(ObjectTable).Get(m.ElementID).Scan(&c2obj); nil != e {
-				logrus.Errorln("Get Object failed:>", e)
+				log.Errorln("Get Object failed:>", e)
 				return e
 			}
 			var up = make(map[string]interface{})
@@ -167,10 +168,10 @@ func saveADI(session *xql.Session, adi c2.ADI) error {
 			up["valid_start"] = nil
 			up["valid_end"] = nil
 			if n, e := session.Table(ObjectTable).Where("id", m.ElementID).Where("type", m.ElementType).Update(up); nil != e {
-				logrus.Errorln("Un Mapping Object failed:>", e)
+				log.Errorln("Un Mapping Object failed:>", e)
 				return e
 			} else {
-				logrus.Infoln("Un Mapping Object:>", c2obj.ElementType, c2obj.ID, c2obj.Code, n)
+				log.Infoln("Un Mapping Object:>", c2obj.ElementType, c2obj.ID, c2obj.Code, n)
 			}
 		}
 	}
